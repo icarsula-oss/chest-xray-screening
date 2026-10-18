@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Chest X-ray AI | Educational Project</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <h2>Chest X-ray AI</h2>
+        <span>Educational Research Prototype</span>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>AI-Assisted Chest X-ray Classification</h1>
+
+        <p>
+            Upload a demonstration chest X-ray image to
+            explore how a trained deep learning model
+            classifies images into dataset categories.
+        </p>
+    </section>
+
+    <div class="disclaimer">
+        <strong>Educational use only</strong>
+        <p>
+            This system is not intended for medical diagnosis,
+            treatment decisions, or fitness-for-work clearance.
+            A NORMAL prediction does not establish good health.
+            Do not upload identifiable patient images.
+        </p>
+    </div>
+
+    <div class="dashboard">
+
+        <section class="card">
+            <h2>Upload Chest X-ray</h2>
+
+            <p>
+                Supported formats: JPG and PNG.
+                Maximum size: 8 MB.
+            </p>
+
+            <form action="/predict"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <input
+                    type="file"
+                    name="xray_image"
+                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    required
+                >
+
+                <button type="submit">
+                    Analyze Demonstration Image
+                </button>
+            </form>
+
+            {% if error %}
+                <p class="error" role="alert">{{ error }}</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Classification Result</h2>
+
+            {% if preview %}
+                <img
+                    class="preview"
+                    src="data:image/jpeg;base64,{{ preview }}"
+                    alt="Uploaded X-ray preview"
+                >
+            {% else %}
+                <div class="placeholder">
+                    No image analyzed yet.
+                </div>
+            {% endif %}
+
+            {% if prediction %}
+                <div class="result">
+                    <span>Experimental Model Prediction</span>
+
+                    <h2>{{ prediction }}</h2>
+
+                    <p>
+                        Model score for predicted class:
+                        <strong>{{ confidence }}%</strong>
+                    </p>
+
+                    <small>
+                        This is an uncalibrated model score,
+                        not a clinical confidence estimate.
+                        The model may be incorrect, particularly
+                        for images unlike its training dataset.
+                    </small>
+                </div>
+            {% endif %}
+        </section>
+
+    </div>
+
+    <section class="information">
+        <h2>About the Project</h2>
+
+        <p>
+            This educational application uses MobileNetV2
+            transfer learning with a pediatric chest X-ray
+            dataset labeled NORMAL and PNEUMONIA.
+        </p>
+
+        <p>
+            The model has not been clinically validated and
+            cannot reliably evaluate adult occupational
+            health or other chest conditions.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    <p>Chest X-ray AI | Machine Learning Research Project</p>
+</footer>
+
+</body>
+</html>
